@@ -40,7 +40,12 @@ export async function generateMetadata({
   const publishedAt = new Date(post.date).toISOString()
   const modifiedAt = new Date(post.lastmod || post.date).toISOString()
   const authors = authorDetails.map((author) => author.name)
-  let imageList = [siteMetadata.socialBanner]
+  const ogUrl = new URL(`${siteMetadata.siteUrl}/api/og`);
+  ogUrl.searchParams.set('heading', post.title);
+  ogUrl.searchParams.set('type', post.type);
+  ogUrl.searchParams.set('tags', post.tags.join(' '));
+  ogUrl.searchParams.set('author', 'Tim Damen');
+  let imageList = [ogUrl.toString()]
   if (post.images) {
     imageList = typeof post.images === 'string' ? [post.images] : post.images
   }

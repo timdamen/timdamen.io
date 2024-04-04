@@ -10,6 +10,19 @@ interface PageSEOProps {
 }
 
 export function genPageMetadata({ title, description, image, ...rest }: PageSEOProps): Metadata {
+
+  const ogUrl = new URL(`${siteMetadata.siteUrl}/api/og`);
+  ogUrl.searchParams.set('heading', title);
+  ogUrl.searchParams.set('tags', 'Frontend Accessibility Speaking Leadership');
+  ogUrl.searchParams.set('author', 'Tim Damen');
+  let imageList = [ogUrl.toString()]
+
+  const ogImages = imageList.map((img) => {
+    return {
+      url: img.includes('http') ? img : siteMetadata.siteUrl + img,
+    }
+  })
+
   return {
     title,
     openGraph: {
@@ -17,7 +30,7 @@ export function genPageMetadata({ title, description, image, ...rest }: PageSEOP
       description: description || siteMetadata.description,
       url: './',
       siteName: siteMetadata.title,
-      images: image ? [image] : [siteMetadata.socialBanner],
+      images: ogImages,
       locale: 'en_US',
       type: 'website',
     },

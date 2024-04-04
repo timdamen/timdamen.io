@@ -1,3 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="344.5639097744361 330.27819548872174 111.73684210526318 91.21804511278197" width="53.87" height="43.61"><defs><path d="M453.3 331.28L453.3 359.85L388.64 418.5L388.64 388.42L453.3 331.28Z" id="aFZf6T5ED"></path><linearGradient id="gradientb2ThqnP5Op" gradientUnits="userSpaceOnUse" x1="420.97" y1="331.28" x2="420.97" y2="418.5"><stop style="stop-color: #06b6d4;stop-opacity: 1" offset="0%"></stop><stop style="stop-color: #67e8f9;stop-opacity: 1" offset="100%"></stop></linearGradient><path d="M410.23 331.28L410.23 359.85L345.56 418.5L345.56 388.42L410.23 331.28Z" id="a9fehgwfM"></path><linearGradient id="gradientk1wNV9Ostb" gradientUnits="userSpaceOnUse" x1="377.89" y1="331.28" x2="377.89" y2="418.5"><stop style="stop-color: #06b6d4;stop-opacity: 1" offset="0%"></stop><stop style="stop-color: #67e8f9;stop-opacity: 1" offset="100%"></stop></linearGradient></defs><g><g><use xlink:href="#aFZf6T5ED" opacity="1" fill="url(#gradientb2ThqnP5Op)"></use></g><g><use xlink:href="#a9fehgwfM" opacity="1" fill="url(#gradientk1wNV9Ostb)"></use></g></g></svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              version="1.0"
+              viewBox="0 0 164 148"
+              height="75"
+              width="75"
+              className="text-gray-900 transition-colors ease-in hover:text-primary-500 dark:text-white dark:hover:text-primary-500"
+            >
+              <g
+                transform="translate(0.000000,149.000000) scale(0.100000,-0.100000)"
+                fill="currentColor"
+                stroke="none"
+              >
+                <path d="M0 740 l0 -740 820 0 820 0 0 740 0 740 -820 0 -820 0 0 -740z m640 75 l0 -295 80 0 80 0 0 296 0 296 168 -3 c166 -4 168 -4 235 -37 117 -58 171 -156 171 -312 0 -182 -78 -295 -231 -335 -46 -12 -135 -15 -450 -15 l-393 0 0 55 0 55 105 0 105 0 0 295 0 295 65 0 65 0 0 -295z"></path>
+                <path d="M930 760 l0 -240 71 0 c94 0 146 17 190 61 40 40 59 97 59 179 0 168 -78 240 -260 240 l-60 0 0 -240z"></path>{' '}
+              </g>
+            </svg>
