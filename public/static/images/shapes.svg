@@ -1,0 +1,47 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="432pt" viewBox="0 0 720 432" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 432 
+L 720 432 
+L 720 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 269.208 284.688 
+L 302.472 184.896 
+L 335.736 284.688 
+z
+" clip-path="url(#p4ecff0fb0e)" style="fill: #0000ff; stroke: #0000ff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 402.264 184.896 
+C 411.085716 184.896 419.547305 181.391095 425.7852 175.1532 
+C 432.023095 168.915305 435.528 160.453716 435.528 151.632 
+C 435.528 142.810284 432.023095 134.348695 425.7852 128.1108 
+C 419.547305 121.872905 411.085716 118.368 402.264 118.368 
+C 393.442284 118.368 384.980695 121.872905 378.7428 128.1108 
+C 372.504905 134.348695 369 142.810284 369 151.632 
+C 369 160.453716 372.504905 168.915305 378.7428 175.1532 
+C 384.980695 181.391095 393.442284 184.896 402.264 184.896 
+z
+" clip-path="url(#p4ecff0fb0e)" style="fill: #ff0000; stroke: #ff0000; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 468.792 251.424 
+L 535.32 251.424 
+L 535.32 184.896 
+L 468.792 184.896 
+z
+" clip-path="url(#p4ecff0fb0e)" style="fill: #008000; stroke: #008000; stroke-linejoin: miter"/>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p4ecff0fb0e">
+   <rect x="202.68" y="51.84" width="332.64" height="332.64"/>
+  </clipPath>
+ </defs>
+</svg>
