@@ -9,7 +9,7 @@ const siteMetadata = {
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://timdamen.io',
-  siteRepo: 'https://github.com/timlrx/tailwind-nextjs-starter-blog',
+  siteRepo: 'https://github.com/timdamen/timdamen.io',
   socialBanner: '/static/images/twitter-card.png',
   mastodon: 'https://mastodon.social/@mastodonuser',
   rss: '/feed.xml',
@@ -17,7 +17,7 @@ const siteMetadata = {
   github: 'https://github.com/timdamen',
   twitter: 'https://twitter.com/timdamen_io',
   facebook: 'https://facebook.com',
-  youtube: 'https://youtube.com',
+  youtube: 'https://www.youtube.com/channel/UCFycB17XacLHthhfeg71Hxw',
   linkedin: 'https://www.linkedin.com/in/tim-damen-20a1b4106',
   threads: 'https://www.threads.net',
   instagram: 'https://www.instagram.com',

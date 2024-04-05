@@ -1,6 +1,7 @@
 import siteMetadata from '@/data/siteMetadata'
 import { genPageMetadata } from 'app/seo'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export const metadata = genPageMetadata({ title: 'Speaking' })
 
@@ -8,18 +9,20 @@ export default function Page() {
   return (
     <div>
       <section className="relative lg:flex">
-        <div className="pt-6 space-y-2 lg:w-[55%] md:space-y-5">
+        <div className="space-y-2 pt-6 md:space-y-5 lg:w-[55%]">
           <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             Speaking
           </h1>
           <p className="text-xl font-bold prose dark:prose-invert">
-            I love to share my toughts and experiences with others. From guest lectures to
-            conferences or meetups, from live coding on stage to key notes - I'm always open for a
-            conversation. On this page you can find out which subject I cover, where I've spoken
-            before, and how to invite me to your event.
+            I love to share my toughts and experiences with others. From{' '}
+            <a href="#free-guest-lectures">guest lectures</a> to conferences or meetups, from live
+            coding on stage to key notes - I'm always open for a conversation. On this page you can
+            find out which <a href="#what-i-talk-about">subject I cover</a>,{' '}
+            <a href="#previous-events">where I've spoken</a> before, and how to{' '}
+            <a href="#inquiry">invite me</a> to your event.
           </p>
         </div>
-        <figure className="w-full mt-5 transition-transform ease-in-out lg:rotate-3 lg:w-5/12 xl:w-6/12 lg:ml-10 lg:absolute lg:block lg:-right-10 xl:-right-32 lg:-top-10 hover:rotate-0">
+        <figure className="w-full mt-5 transition-transform ease-in-out hover:rotate-0 lg:absolute lg:-right-10 lg:-top-10 lg:ml-10 lg:block lg:w-5/12 lg:rotate-3 xl:-right-32 xl:w-6/12">
           <Image
             alt="Tim Damen on stage"
             src="/static/images/meetup-abnamro.webp"
@@ -34,7 +37,7 @@ export default function Page() {
       </section>
 
       <section className="prose max-w-[575px] pb-8 pt-8 text-xl dark:prose-invert xl:col-span-2">
-        <h2>What I talk about</h2>
+        <h2 id="what-i-talk-about">What I talk about</h2>
         These are some of the subjects I cover in my talks:
         <ul>
           <li>
@@ -57,35 +60,50 @@ export default function Page() {
           <li>
             <b>Leading a team of engineers</b>
             <br /> How to lead a happy and productive team, decision making, stakeholder management
+            and leadership
           </li>
         </ul>
-        {/* <figure className="-ml-5">
-          <img
-            alt="Tim Damen on stage"
-            className="w-[105%] max-w-none rotate-2"
-            src="/static/images/meetup-abnamro.jpg"
-            loading="lazy"
-          />
-          <figcaption className="mt-2 text-sm rotate-2">
-            At Passionate People x ABN AMRO Front-end meetup in Amsterdam (2023). Photo by Nicole
-            Ortiz Franco
-          </figcaption>
-        </figure> */}
-        <h2>Previous events</h2>
+        <h2 id="previous-events">Previous events</h2>
         <p>
-          If you'd like me at your event, email me. Please be as detailed as you can: budget, date,
-          location, target audience, audience expected size etc can help me get back to you quicker.
+          I have spoken at various events, including meetups, conferences, and guest lectures. Some
+          of the events I've spoken at include:{' '}
+          <a
+            href="https://www.meetup.com/frontend-developer-meetup-amsterdam/events/294224306/"
+            target="_blank"
+          >
+            PP x ABN Front-end meetup
+          </a>
+          ,{' '}
+          <a href="https://www.linkedin.com/posts/tim-damen-20a1b4106_devcon-frontend-frontenddevelopment-activity-7155123404713435136-mdHE">
+            DevCon
+          </a>
+          , and a quest lecture at{' '}
+          <a href="https://www.hogeschoolrotterdam.nl/" target="_blank">
+            Rotterdam University of Applied Sciences
+          </a>
+          .
         </p>
-        <h2>Free guest lectures</h2>
+        <figure>
+          <iframe
+            title='Tim Damen live coding at DevCon in Amsterdam (2024)'
+            className="h-[350px] h-full max-h-full w-full max-w-full"
+            src="https://www.youtube.com/embed/i4TkUfmw7Rk"
+          ></iframe>
+
+          <figcaption className="text-sm">Live coding at DevCon in Amsterdam (2024)</figcaption>
+        </figure>
+        <h2 id="free-guest-lectures">Free guest lectures</h2>
         <p>
-          Booking a quest lecture as an educational institution is free of charge. I'm happy to share
-          my knowledge and experience with students. These lectures are usually 1-2 hours long
-          and can be customised to your needs. Feel free to contact me for more information.
+          Booking a quest lecture as an educational institution is free of charge. I'm happy to
+          share my knowledge and experience with students. These lectures are usually 1-2 hours long
+          and can be customised to your needs. Feel free to <Link href="/contact">reach out</Link>{' '}
+          for more information.
         </p>
-        <h2>Inquiry</h2>
+        <h2 id="inquiry">Inquiry</h2>
         <p>
-          If you'd like me at your event, email me. Please be as detailed as you can: budget, date,
-          location, target audience, audience expected size etc can help me get back to you quicker.
+          If you'd like me at your event, <Link href="/contact">contact me</Link>. Please be as
+          detailed as you can: budget, date, location, target audience, audience expected size etc
+          can help me get back to you quicker.
         </p>
       </section>
     </div>
