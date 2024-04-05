@@ -86,7 +86,7 @@ export default function Page() {
         <figure>
           <iframe
             title='Tim Damen live coding at DevCon in Amsterdam (2024)'
-            className="h-[350px] h-full max-h-full w-full max-w-full"
+            className="h-[350px] max-h-full w-full max-w-full"
             src="https://www.youtube.com/embed/i4TkUfmw7Rk"
           ></iframe>
 
