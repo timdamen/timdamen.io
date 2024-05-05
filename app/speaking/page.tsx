@@ -74,10 +74,14 @@ export default function Page() {
             PP x ABN Front-end meetup
           </a>
           ,{' '}
-          <a href="https://www.linkedin.com/posts/tim-damen-20a1b4106_devcon-frontend-frontenddevelopment-activity-7155123404713435136-mdHE">
+          <a href="https://www.youtube.com/watch?v=i4TkUfmw7Rk">
             DevCon
           </a>
-          , and a quest lecture at{' '}
+          ,{' '}
+          <a href="https://frontendnation.com/">
+            FrontendNation
+          </a>{' '}
+          and quest lectures at{' '}
           <a href="https://www.hogeschoolrotterdam.nl/" target="_blank">
             Rotterdam University of Applied Sciences
           </a>
@@ -85,7 +89,7 @@ export default function Page() {
         </p>
         <figure>
           <iframe
-            title='Tim Damen live coding at DevCon in Amsterdam (2024)'
+            title="Tim Damen live coding at DevCon in Amsterdam (2024)"
             className="h-[350px] max-h-full w-full max-w-full"
             src="https://www.youtube.com/embed/i4TkUfmw7Rk"
           ></iframe>
@@ -101,9 +105,9 @@ export default function Page() {
         </p>
         <h2 id="inquiry">Inquiry</h2>
         <p>
-          If you'd like me at your event, <Link href="/contact">contact me</Link>. Please be as
-          detailed as you can: budget, date, location, target audience, audience expected size etc
-          can help me get back to you quicker.
+          If you'd like me at your event, <Link href="/contact">contact me</Link>. Try to be as
+          detailed as posible: budget, date, location, target audience, audience expected size etc
+          can help me get back to you sooner.
         </p>
       </section>
     </div>

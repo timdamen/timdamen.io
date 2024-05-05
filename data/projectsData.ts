@@ -12,6 +12,12 @@ const projectsData: Project[] = [
     imgSrc: '/static/images/web-accessibility-io.webp',
     href: 'https://www.web-accessibility.io/playbook',
   },
+  {
+    title: 'nicoleortizfranco.nl',
+    description: `Portfolio website for my wife.`,
+    imgSrc: '/static/images/portfolio-website.webp',
+    href: 'https://nicole-ortiz-franco.netlify.app/',
+  },
 ]
 
 export default projectsData

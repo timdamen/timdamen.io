@@ -17,7 +17,7 @@ export default function Page() {
       <section className="prose max-w-[575px] pb-8 pt-8 text-xl dark:prose-invert xl:col-span-2">
         <p className="font-bold">
           I’m always open for a conversation, be it for questions, event speaking invitations, or
-          your valuable feedback on my posts. Here’s how you can connect with me.
+          feedback on my work. Here’s how you can connect with me.
         </p>
         <h2>Preferred Contact Method</h2>
         <p>
