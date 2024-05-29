@@ -1,0 +1,571 @@
+---
+title: 'Automated Form Accessibility Testing With @testing-library'
+date: '2024-06-06'
+tags: ['accessibility', 'guide', 'Vue.js', 'Vitest', '@testing-library']
+draft: true
+summary: Is your form accessible? Let's test it with @testing-library. A step by step guide on how to automatically test form accessibility.
+---
+
+<b>
+  In this guide I will show how to automatically test certain parts of form accessibility with{' '}
+  <a href="https://testing-library.com/" target="_blank" rel="noopener noreferrer">`@testing-library`</a>. This tutorial is an extension on a talk I gave at <a href="https://frontendnation.com/" target="_blank" rel="noopener noreferrer">FrontendNation</a>. If you did not attend the talk, you can still follow along without any problems. I will be using
+  [Vue.js](https://vuejs.org/) in this tutorial, but the principles can be applied to any front-end framework.
+</b>
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## Why you should take good care of form accessibility
+
+In general making sure people with disabilities can use your app/website is always the best way to go. If you are building something on the web, making sure it's accessible gives you an advantace over non-accessible websites because, on an accessible website everyone is able to buy your product or use your service. So this gives you a larger audience to interact with your app.
+
+### It's about energy 🔋 and time ⏰
+
+People with disabilities are often faced with barriers when browsing the web. This can be very frustrating and time consuming. By making sure your form is accessible, you can save people a lot of time and energy. Time and energy they can spend on other more meaningfull things, not having to puzzle their way trough an inaccessible form.
+
+## What is `@testing-library` 🐙
+
+`@testing-library` is a set of utilities for testing JavaScript code. It is a simple and complete testing library that encourages using [semantic HTML](https://testing-library.com/docs/queries/about#priority). It intergrates really well with populair unit testing frameworks like [Jest](https://jestjs.io/) and [Vitest](https://vitest.dev/) and, one of the [guiding principles](https://testing-library.com/docs/guiding-principles) of the Testing Library APIs is that they should enable you to test your app the way your users use it, including through accessibility interfaces like screen readers.
+
+## Requirements
+
+Some basic knowledge of Vue.js and Jest/Vitest is required to follow along with this guide. Other than that you will need to have the following installed on your machine:
+
+- At the time of writing this guide, I'm using [Node](https://nodejs.org/) v20.9.0 and [npm](https://www.npmjs.com/) v10.1.0.
+- An editor of your choice, I'm using [Visual Studio Code](https://code.visualstudio.com/).
+- A terminal to run commands, I'm using the default MacOs terminal.
+- A browser to view the project, I'm using [Google Chrome](https://www.google.com/chrome/).
+
+## Project setup
+
+Let's start by creating a new Vue.js project. Open your terminal and run the following command:
+
+### 1. create Vue.js project
+```sh
+npm create vue@latest
+```
+
+This command will install and execute [create-vue](https://github.com/vuejs/create-vue), the official Vue project scaffolding tool. You will be presented with prompts for several optional features such as TypeScript and testing support. Now please select the following options:
+
+```terminal {6}
+✔ Project name: <your-project-name>
+✔ Add TypeScript? No
+✔ Add JSX Support? No
+✔ Add Vue Router for Single Page Application development? No
+✔ Add Pinia for state management? No
+✔ Add Vitest for Unit testing? Yes
+✔ Add an End-to-End Testing Solution? No
+✔ Add ESLint for code quality? Yes
+✔ Add Prettier for code formatting? Yes
+✔ Add Vue DevTools 7 extension for debugging? (experimental) No
+
+Scaffolding project in ./<your-project-name>...
+Done.
+```
+
+Important is to select `Yes` for the `Add Vitest for Unit testing?` option. This will add [Vitest](https://vitest.dev/) to the project. Vitest is a testing framework that is inspired by Jest and is a good fit for Vue.js projects. It is also the testing framework that we will be using in this guide. We will use Vitest togther with `@testing-library` to test the accessibility of a form.
+
+### 2. install `@testing-library` packages
+Now we need to install the `@testing-library` packages. Navigate to the root of the project and run the following command in your terminal:
+
+```sh
+npm install @testing-library/jest-dom @testing-library/user-event @testing-library/vue --save-dev
+```
+
+### 3. update `vitest.config.js` file
+The last thing we need to do for the setup is to add the `globals: true` property to the `vitest.config.js` file. This will make it so a cleanup is done by `@testing-library` after each test. Open the `vitest.config.js` file and add the following code:
+
+```diff-js:vitest.config.js
+...
+defineConfig({
+  test: {
+    environment: 'jsdom',
++   globals: true,
+    exclude: [...configDefaults.exclude, 'e2e/**'],
+    root: fileURLToPath(new URL('./', import.meta.url))
+  }
+})
+...
+```
+
+## Template and Styling
+
+In this section I will not go in to much detail about the template and styling of the form. I will provide you with the code and highlight a few things that are worth mentioning for the accessibility of the form. I'm also sure that not every part of the Vue.js template and the styling is top notch, but that is not the focus of this tutorial.
+
+You can check out a demo of the final Vue.js app we will create [here](#test). The complete code for the Vue.js app can be found [here on github](#test).
+
+Open the `src/App.vue` file and replace the content with the following code:
+
+<details>
+  <summary>ℹ️ Click to open the `App.vue` code samples</summary>
+```html:App.vue showLineNumbers
+<template>
+  <main>
+    <h1 class="card-title">Contact page</h1>
+    <p class="card-hint">
+      <span aria-hidden="true">*</span>
+      Fill the required fields
+    </p>
+    <div class="card">
+      <form novalidate @submit="handleSubmit">
+        <div class="field">
+          <label for="email" class="field-label" :class="{ error: emailError !== '' }">
+            Email
+            <span aria-hidden="true">*</span>
+          </label>
+          <input
+            id="email"
+            type="email"
+            aria-required="true"
+            class="field-input"
+            aria-describedby="emailError"
+            v-model="email"
+            :aria-invalid="emailError !== ''"
+            @blur="validateFieldEmail(email)"
+          />
+          <span class="field-hint">
+            <p class="field-error" id="emailError" role="alert">
+              {{ emailError }}
+            </p>
+          </span>
+        </div>
+
+        <div class="field">
+          <label for="phone" class="field-label" :class="{ error: phoneError !== '' }">
+            Phone number
+            <span aria-hidden="true">*</span>
+          </label>
+          <input
+            id="phone"
+            type="tel"
+            class="field-input"
+            aria-required="true"
+            aria-describedby="phoneError phoneHint"
+            :aria-invalid="phoneError !== ''"
+            v-model="phone"
+            @blur="validateFieldPhone(phone)"
+          />
+          <span class="field-hint">
+            <p class="field-error" id="phoneError" role="alert">
+              {{ phoneError }}
+            </p>
+            <p id="phoneHint">Hint: Phone number must start with 06.</p>
+          </span>
+        </div>
+
+        <p
+          class="form-feedback"
+          :class="{ error: formFeedbackError, result: formFeedback }"
+          role="alert"
+        >
+          {{ formFeedback }}
+        </p>
+
+        <button type="submit" class="button">Save</button>
+      </form>
+    </div>
+  </main>
+</template>
+```
+
+```js:App.vue showLineNumbers=68
+...
+<script setup>
+  import { ref } from 'vue'
+
+  const email = ref('')
+  const phone = ref('')
+  const emailError = ref('')
+  const phoneError = ref('')
+  const formFeedback = ref('')
+  const formFeedbackError = ref(false)
+
+  const validateFieldEmail = (email) => {
+    const isEmpty = email === ''
+
+    if (isEmpty) {
+      emailError.value = 'Error: Email is required.'
+    } else {
+      const isEmailValid = /\S+@\S+\.\S+/.test(email)
+      emailError.value = isEmailValid ? '' : 'Error: Email must contain @ and . symbols.'
+    }
+  }
+  const validateFieldPhone = (phone) => {
+    const isEmpty = phone === ''
+
+    if (isEmpty) {
+      phoneError.value = 'Error: Phone number is required.'
+    } else {
+      const isPhoneValid = /^06+/.test(phone)
+      phoneError.value = isPhoneValid ? '' : 'Error: Phone number must start with 06.'
+    }
+  }
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    validateFieldEmail(email.value)
+    validateFieldPhone(phone.value)
+
+    if (emailError.value || phoneError.value) {
+      const errorCount = (emailError.value ? 1 : 0) + (phoneError.value ? 1 : 0)
+
+      formFeedbackError.value = true
+      formFeedback.value =
+        errorCount === 1
+          ? `Error: Failed to save because ${errorCount} field is invalid.`
+          : `Error: Failed to save because ${errorCount} fields are invalid.`
+    } else {
+      formFeedbackError.value = false
+      formFeedback.value = 'Saved with success. ✅'
+    }
+  }
+</script>
+```
+
+```css:App.vue showLineNumbers=119
+...
+<style>
+  html {
+    font-size: 80%;
+    --theme-width: 650px;
+    --theme-text_0: #333;
+    --theme-text_1: #6e6e6e;
+    --theme-bg_0: #f7f2ed;
+    --theme-bg_1: white;
+    --theme-primary: blue;
+    --theme-secondary: orange;
+
+    --theme-focus-shadow: var(--theme-bg_0) 0 0 0 2px, var(--theme-secondary) 0 0 0 4px;
+  }
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    background-color: var(--theme-bg_0);
+    color: var(--theme-text_0);
+    font-family: 'arial', 'sans-serif';
+    font-size: 1.6rem;
+    font-weight: 300;
+    box-sizing: border-box;
+    line-height: 1.5;
+  }
+  body * {
+    box-sizing: inherit;
+  }
+  .card {
+    position: relative;
+    max-width: var(--theme-width);
+    min-width: 500px;
+    padding: 24px 16px;
+    border: 1px solid var(--theme-primary);
+    background-color: var(--theme-bg_1);
+    box-shadow: 2px 2px lightgray;
+  }
+  .card-title {
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: 600;
+  }
+  .card-hint {
+    font-size: 1.3rem;
+    margin: 0;
+  }
+  .field {
+    margin-bottom: 16px;
+  }
+  .field-label {
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .field-label.error {
+    color: red;
+  }
+  .field-input {
+    max-width: 15rem;
+    min-height: 3rem;
+    border: none;
+    border: 1px solid var(--theme-text_1);
+    font-size: 1.6rem;
+  }
+  .field-input:focus:not(:focus-visible) {
+    outline: none;
+  }
+  .field-input:focus-visible {
+    outline: none;
+    box-shadow: var(--theme-focus-shadow);
+  }
+  .field-hint {
+    font-size: 1.4rem;
+    margin-top: 4px;
+    color: var(--theme-text_1);
+  }
+  .field-error {
+    margin-top: 4px;
+    font-size: 1.4rem;
+    color: red;
+  }
+  .form-feedback {
+    padding: 5px;
+    padding: 0 5px 0 5px;
+    margin-bottom: 10px;
+  }
+  .form-feedback.result {
+    border: solid 2px green;
+  }
+  .form-feedback.error {
+    border: solid 2px red;
+  }
+  .button {
+    display: inline-block;
+    cursor: pointer;
+    font-size: 1.6rem;
+    padding: 8px 20px;
+    background-color: var(--theme-primary);
+    border: none;
+    color: white;
+    text-align: center;
+  }
+  .button:focus {
+    outline: none;
+    box-shadow: var(--theme-focus-shadow);
+  }
+</style>
+```
+</details>
+
+### Let's highlight a few things 🖌️ 
+
+Let's highlight a few things that are worth mentioning for the accessibility of the form and later on for the testing of the form:
+
+```html:App.vue {3-6, 8, 9, 11, 12, 13, 18, 21} showLineNumbers
+...
+<div class="field">
+  <label for="phone" class="field-label" :class="{ error: phoneError !== '' }">
+    Phone number
+    <span aria-hidden="true">*</span>
+  </label>
+  <input
+    id="phone"
+    type="tel"
+    class="field-input"
+    aria-required="true"
+    aria-describedby="phoneError phoneHint"
+    :aria-invalid="phoneError !== ''"
+    v-model="phone"
+    @blur="validateFieldPhone(phone)"
+  />
+  <span class="field-hint">
+    <p class="field-error" id="phoneError" role="alert">
+      {{ phoneError }}
+    </p>
+    <p id="phoneHint">Hint: Phone number must start with 06.</p>
+  </span>
+</div>
+...
+```
+
+### From top to bottom:
+
+1. The `label` element has a `for` attribute that matches the `id` of the `input` element. This is important for screen readers and other [ATs](https://www.atia.org/home/at-resources/what-is-at/) to know what the input field is for.
+2. The `input` element `type` attribute is set to `tel`. This is important for mobile devices to show the correct keyboard layout. Also screen readers and other ATs can use this information to provide the user with the correct information.
+3. The `input` element has an `aria-required` attribute set to `true`. This is for screen readers and other ATs to know that the input field is required.
+4. The `input` element has an `aria-describedby` attribute that references the `id`s of two different `p` elements with the `id` of `phoneError` and `phoneHint`. This is important for screen readers and other ATs to know where to find the error message and hint message for important extra information or state of the input element.
+5. The `input` element has an `aria-invalid` attribute that is set to a dynamic value. This is for screen readers and other ATs to know if the input field is in an invalid state.
+6. The `p` element with `class="field-error"` has a `role` attribute set to `alert`. This is for screen readers and other ATs to know that this element is an alert message. The moment the content inside of this element changes, the screen reader will read the content of this element.
+
+All of the above mentioned points make the form more accessible for a lot of users. But what if I told you that you can automatically test all of this with `@testing-library`? Let's dive into the testing part of the form.
+
+## Testing
+
+We are going to creat a so called [component test](https://vuejs.org/guide/scaling-up/testing#testing-types) for the form. A component test is a test in between a unit test and end-to-end test. A component test checks that your component mounts, renders, can be interacted with, and behaves as expected. These tests import more code than unit tests, are more complex, and require more time to execute. We will test the form with the `@testing-library` utilities.
+
+### 1. Setup
+First we need to create a test file. Create a new file in the `src` folder called `App.spec.js`. Now open the file, the first thing we need to do is create a `setup()` function. This helper function will render the component and return the interactive html elements that we want use in our tests. 
+
+```js:App.spec.js showLineNumbers
+import { render, screen } from '@testing-library/vue'
+import { describe, expect, it } from 'vitest'
+import '@testing-library/jest-dom/vitest'
+import userEvent from '@testing-library/user-event'
+
+import App from './App.vue'
+
+function setup() {
+  const utils = render(App)
+
+  const emailInput = screen.getByRole('textbox', { name: 'Email' })
+  const phoneInput = screen.getByRole('textbox', { name: 'Phone number' })
+  const submitButton = screen.getByRole('button', { name: 'Save' })
+
+  return {
+    emailInput,
+    phoneInput,
+    submitButton,
+    ...utils
+  }
+}
+
+describe('Contact form - App.vue', () => {
+  it('renders properly', () => {
+    const { container } = setup()
+
+    expect(!!container.parentNode).toBeTruthy()
+  })
+})
+```
+
+In the `setup()` function we use the `render()` function from `@testing-library/vue` to render the `App` component. We then use the `screen` object to get the interactive html elements we want to use in our tests. We get the `emailInput` and `phoneInput` elements by their `role` and `name` attributes. We get the `submitButton` element by its `role` and `name` attributes. We then return the interactive html elements and the `utils` object from the `render()` function. More information on the queriering of elements like types of queries and rules on how to use them can be [found here](https://testing-library.com/docs/queries/about).
+
+### 2. input labels
+
+The first test we are going to write is to check if the input labels are present in the form. The importants of this test is sortly mentioned in the [template and styling](#from-top-to-bottom) section.
+
+```js:App.spec.js
+...
+describe('Contact form - App.vue', () => {
+  ...
+  it('has email and phone number with correct labels', async () => {
+    // call the setup function and get the emailInput and phoneInput elements
+    const { emailInput, phoneInput } = setup()
+
+    expect(emailInput).toHaveAccessibleName('Email')
+    expect(emailInput).not.toHaveAccessibleName('Email*')
+    expect(phoneInput).toHaveAccessibleName('Phone number')
+    expect(phoneInput).not.toHaveAccessibleName('Phone number*')
+  })
+})
+```
+
+In the test we use the [`toHaveAccessibleName()`](https://github.com/testing-library/jest-dom?tab=readme-ov-file#tohaveaccessiblename) matcher to check if the `emailInput` and `phoneInput` elements have the correct label. The `not.toHaveAccessibleName()` matcher checks if the element does not have the name with an asterisk because we have hidden the asterisk with `aria-hidden`. The `toHaveAccessibleName()` matcher is a custom matcher that is provided by the `@testing-library/jest-dom` package. This package provides custom matchers for asserting on the state of the DOM. More information on the custom matchers can be [found here](https://github.com/testing-library/jest-dom?tab=readme-ov-file#jest-dom).
+
+### 3. input types
+
+The second test we are going to write is to check if the input types are correct. The importants of this test is sortly mentioned in the [template and styling](#from-top-to-bottom) section.
+
+```js:App.spec.js
+...
+describe('Contact form - App.vue', () => {
+  ...
+  it('has email and phone number as the correct input types', async () => {
+    const { emailInput, phoneInput } = setup()
+
+    expect(emailInput).toHaveAttribute('type', 'email')
+    expect(phoneInput).toHaveAttribute('type', 'tel')
+  })
+})
+```
+
+In the test we use the [`toHaveAttribute()`](https://github.com/testing-library/jest-dom?tab=readme-ov-file#tohaveattribute) matcher to check if the `emailInput` and `phoneInput` elements have the correct `type` attribute.
+
+### 4. input required
+
+The third test we are going to write is to check if the input fields are required. The importants of this test is sortly mentioned in the [template and styling](#from-top-to-bottom) section.
+
+```js:App.spec.js
+...
+describe('Contact form - App.vue', () => {
+  ...
+  it('has email and phone number as required form elements', async () => {
+    const { emailInput, phoneInput } = setup()
+
+    expect(emailInput).toBeRequired()
+    expect(phoneInput).toBeRequired()
+  })
+})
+```
+
+In the test we use the [`toBeRequired()`](https://github.com/testing-library/jest-dom?tab=readme-ov-file#toberequired) matcher to check if the `emailInput` and `phoneInput` elements are required.
+
+### 5. input hint
+
+The fourth test we are going to write is to check if the phone number input field has an accessible hint. The importants of this test is sortly mentioned in the [template and styling](#from-top-to-bottom) section.
+
+```js:App.spec.js
+...
+describe('Contact form - App.vue', () => {
+  ...
+  it('has a accessible hint for the phone number input', async () => {
+    const { phoneInput } = setup()
+
+    expect(phoneInput).toHaveAccessibleDescription(
+      expect.stringMatching('Hint: Phone number must start with 06.')
+    )
+  })
+})
+```
+
+In the test we use the [`toHaveAccessibleDescription()`](https://github.com/testing-library/jest-dom?tab=readme-ov-file#tohaveaccessibledescription) matcher to check if the `phoneInput` element has an accessible hint. If we look closly you can see that we use the `expect.stringMatching()` matcher to check if the hint contains the correct text. This is done because there is an other `p` element with the `id` of `phoneError` that also connect to the `phoneInput` element, but this error message is correctly empty at this moment, this fact makes it so that the `toHaveAccessibleDescription()` matcher will fail if we don't use the `expect.stringMatching()` matcher, because the empty `<p id="phoneError">` returns an empty line.
+
+### 6. input invalid and error message
+
+The fifth and sixth test we are going to write is to check if the input fields are invalid and show an error message when the input is empty. The importants of this test is sortly mentioned in the [template and styling](#from-top-to-bottom) section.
+
+```js:App.spec.js
+...
+describe('Contact form - App.vue', () => {
+  ...
+  it('shows an error message when email is empty', async () => {
+    const { emailInput } = setup()
+
+    await userEvent.click(emailInput)
+    await userEvent.tab()
+
+    expect(emailInput).toBeInvalid()
+    expect(emailInput).toHaveAccessibleDescription('Error: Email is required.')
+  })
+
+  it('shows an error message when phone number is empty', async () => {
+    const { phoneInput } = setup()
+
+    await userEvent.click(phoneInput)
+    await userEvent.tab()
+
+    expect(phoneInput).toBeInvalid()
+    expect(phoneInput).toHaveAccessibleDescription(
+      expect.stringMatching('Error: Phone number is required.')
+    )
+  })
+})
+```
+
+In the tests we for the first time use the `userEvent` object from the [`@testing-library/user-event`](https://testing-library.com/docs/user-event/intro) package. This package provides a set of utilities for interacting with the DOM. We use the `click()` and `tab()` functions to focus the `emailInput` and `phoneInput` elements. We then use the [`toBeInvalid()`](https://github.com/testing-library/jest-dom?tab=readme-ov-file#tobeinvalid) matcher to check if the `emailInput` and `phoneInput` elements are invalid. We use the [`toHaveAccessibleDescription()`](https://github.com/testing-library/jest-dom?tab=readme-ov-file#tohaveaccessibledescription) matcher to check if the `emailInput` and `phoneInput` elements have an accessible error message.
+
+### 7. form feedback
+
+The seventh test we are going to write is to check if the form feedback is shown when the form is invalid.
+
+```js:App.spec.js
+...
+describe('Contact form - App.vue', () => {
+  ...
+  it('shows an error messages when save is click and form is empty', async () => {
+    const { submitButton } = setup()
+
+    await userEvent.click(submitButton)
+
+    const generalErrorMessage = screen.getByText(
+      'Error: Failed to save because 2 fields are invalid.',
+      { selector: 'p' }
+    )
+
+    expect(generalErrorMessage).toBeInTheDocument()
+  })
+})
+```
+
+In this test we use the an `userEvent` to click the `submitButton` element. We then query the `generalErrorMessage` element with the `getByText()` function from the `screen` object. We then use the [`toBeInTheDocument()`](https://github.com/testing-library/jest-dom?tab=readme-ov-file#tobeinthedocument) matcher to check if the `generalErrorMessage` element is present in the DOM.
+
+## Conclusion
+
+In this guide we have learned how to test certain parts of form accessibility with `@testing-library`. We have created a Vue.js app with a form that has a few accessibility features. 
+We have then created a few tests with `@testing-library` to check if the form is accessible. We have tested the following parts of the form: 
+<ol>
+  <li>input labels, `<label>` and `for=""`</li>
+  <li>input types, `type=""`</li>
+  <li>input required `aria-required="true"`</li>
+  <li>input hint `aria-describedby=""`</li>
+  <li>input invalid and error message `aria-invalid="true"`</li>
+  <li>form feedback</li>
+</ol>
+We have also used the `@testing-library/jest-dom` and `@testing-library/user-event` packages to  help us write the tests. I hope you have learned something new and that you can apply this knowledge to your own projects. If you have any questions or feedback, feel free to reach out to me on [Twitter (X)](https://twitter.com/timdamen_io).

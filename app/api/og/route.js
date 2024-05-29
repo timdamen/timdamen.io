@@ -50,35 +50,31 @@ export async function GET(req) {
               {heading}
             </div>
             {values.tags && (
-              <div tw="flex text-3xl tracking-tight font-bold mt-3" style={{ fontFamily: 'Inter' }}>
-                <span tw="bg-white text-blue-900 me-2 px-2.5 py-0.5 rounded">
+              <div tw="flex align-middle items-center text-xl h-7 tracking-tight font-bold mt-3" style={{ fontFamily: 'Inter' }}>
+                <span tw="text-3xl mr-2">🏷️</span> 
+                <span tw="bg-white text-blue-900 px-2 rounded">
                   {values.tags.split(' ')[0]}
                 </span>
                 {values.tags.split(' ')[1] && (
-                  <span tw="bg-white text-blue-900 me-2 px-2.5 py-0.5 rounded ml-3">
+                  <span tw="bg-white text-blue-900 px-2 rounded ml-3">
                     {values.tags.split(' ')[1]}
                   </span>
                 )}
                 {values.tags.split(' ')[2] && (
-                  <span tw="bg-white text-blue-900 me-2 px-2.5 py-0.5 rounded ml-3">
+                  <span tw="bg-white text-blue-900 px-2 rounded ml-3">
                     {values.tags.split(' ')[2]}
                   </span>
                 )}
                 {values.tags.split(' ')[3] && (
-                  <span tw="bg-white text-blue-900 me-2 px-2.5 py-0.5 rounded ml-3">
+                  <span tw="bg-white text-blue-900 px-2 rounded ml-3">
                     {values.tags.split(' ')[3]}
                   </span>
                 )}
                 {values.tags.split(' ')[4] && (
-                  <span tw="bg-white text-blue-900 me-2 px-2.5 py-0.5 rounded ml-3">
+                  <span tw="bg-white text-blue-900 px-2 rounded ml-3">
                     {values.tags.split(' ')[4]}
                   </span>
                 )}
-              </div>
-            )}
-            {values.type && values.author && (
-              <div tw="flex text-3xl tracking-tight mt-2" style={{ fontFamily: 'Inter' }}>
-                {values.type} by {values.author}
               </div>
             )}
           </div>
@@ -86,6 +82,15 @@ export async function GET(req) {
             <div tw="flex text-2xl" style={{ fontFamily: 'Inter', fontWeight: 'normal' }}>
               www.timdamen.io
             </div>
+            {values.type && values.author && (
+              <div tw="flex items-center">
+                <img tw="h-14 w-14 rounded-full mr-3" src='https://www.timdamen.blog/_next/image?url=%2Fstatic%2Fimages%2Favatar.webp&w=96&q=100' alt='profile picture of Tim Damen'/>
+                <div tw="flex flex-col text-2xl" style={{ fontFamily: 'Inter' }}>
+                  <span>{values.type} by {values.author}</span>
+                  <span>@timdamen_io</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       ),
