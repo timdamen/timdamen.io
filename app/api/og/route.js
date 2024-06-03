@@ -32,15 +32,15 @@ export async function GET(req) {
           style={{
             color: '#fff',
             background:
-              values.type === 'Blog' ? 'linear-gradient(90deg, #054fb9 0%, #4c95fa 100%)' : 'linear-gradient(90deg, #111827 0%, #313e5f 100%)',
+              values.type === 'Blog' ? 'linear-gradient(31deg, #054fb9 0%, #4c95fa 100%)' : 'linear-gradient(90deg, #111827 0%, #313e5f 100%)',
           }}
         >
           <span tw="flex items-center justify-between">
             <Logo tw="w-[95px] h-[87px]" />
           </span>
-          <div tw="flex flex-col flex-1 py-10 mt-10">
+          <div tw="flex flex-col flex-1 py-10 mt-6">
             <div
-              tw="flex"
+              tw="flex -mb-5"
               style={{
                 fontWeight: '700',
                 marginLeft: '-5px',
@@ -50,8 +50,8 @@ export async function GET(req) {
               {heading}
             </div>
             {values.tags && (
-              <div tw="flex align-middle items-center text-xl h-7 tracking-tight font-bold mt-3" style={{ fontFamily: 'Inter' }}>
-                <span tw="text-3xl mr-2">🏷️</span> 
+              <div tw="flex align-middle items-center text-2xl tracking-tight h-9 font-bold -mt-10" style={{ fontFamily: 'Inter' }}>
+                <span tw="text-4xl mr-2">🏷️</span> 
                 <span tw="bg-white text-blue-900 px-2 rounded">
                   {values.tags.split(' ')[0]}
                 </span>
@@ -79,13 +79,13 @@ export async function GET(req) {
             )}
           </div>
           <div tw="flex items-center w-full justify-between">
-            <div tw="flex text-2xl" style={{ fontFamily: 'Inter', fontWeight: 'normal' }}>
+            <div tw="flex text-3xl" style={{ fontFamily: 'Inter' }}>
               www.timdamen.io
             </div>
             {values.type && values.author && (
               <div tw="flex items-center">
-                <img tw="h-14 w-14 rounded-full mr-3" src='https://www.timdamen.blog/_next/image?url=%2Fstatic%2Fimages%2Favatar.webp&w=96&q=100' alt='profile picture of Tim Damen'/>
-                <div tw="flex flex-col text-2xl" style={{ fontFamily: 'Inter' }}>
+                <img tw="h-16 w-16 rounded-full mr-3" src='https://www.timdamen.blog/_next/image?url=%2Fstatic%2Fimages%2Favatar.webp&w=96&q=100' alt='profile picture of Tim Damen'/>
+                <div tw="flex flex-col text-3xl" style={{ fontFamily: 'Inter' }}>
                   <span>{values.type} by {values.author}</span>
                   <span>@timdamen_io</span>
                 </div>
