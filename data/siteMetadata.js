@@ -8,7 +8,7 @@ const siteMetadata = {
   welcome: 'Front-end development, Accessibility',
   language: 'en-us',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://timdamen.io',
+  siteUrl: 'https://timdamen.blog',
   siteRepo: 'https://github.com/timdamen/timdamen.io',
   socialBanner: '/static/images/twitter-card.png',
   mastodon: 'https://mastodon.social/@mastodonuser',
