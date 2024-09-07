@@ -50,7 +50,7 @@ export async function GET(req) {
               {heading}
             </div>
             {values.tags && (
-              <div tw="flex align-middle items-center text-2xl tracking-tight h-9 font-bold -mt-10" style={{ fontFamily: 'Inter' }}>
+              <div tw="flex align-middle items-center text-2xl tracking-tight h-9 font-bold mt-10" style={{ fontFamily: 'Inter' }}>
                 <span tw="text-4xl mr-2">🏷️</span> 
                 <span tw="bg-white text-blue-900 px-2 rounded">
                   {values.tags.split(' ')[0]}
