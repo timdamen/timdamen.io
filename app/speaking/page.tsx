@@ -67,34 +67,40 @@ export default function Page() {
         <p>
           I have spoken at various events, including meetups, conferences, and guest lectures. Some
           of the events I've spoken at include:{' '}
-          <a
-            href="https://www.meetup.com/frontend-developer-meetup-amsterdam/events/294224306/"
-            target="_blank"
-          >
-            PP x ABN Front-end meetup
-          </a>
-          ,{' '}
-          <a href="https://www.youtube.com/watch?v=i4TkUfmw7Rk">
-            DevCon
-          </a>
-          ,{' '}
-          <a href="https://frontendnation.com/">
-            FrontendNation
-          </a>{' '}
-          and quest lectures at{' '}
-          <a href="https://www.hogeschoolrotterdam.nl/" target="_blank">
-            Rotterdam University of Applied Sciences
-          </a>
-          .
         </p>
+        <ul>
+          <li>
+            <a
+              href="https://www.meetup.com/frontend-developer-meetup-amsterdam/events/294224306/"
+              target="_blank"
+            >
+              PP x ABN Front-end meetup 2023
+            </a>
+          </li>
+          <li>
+            <a href="https://www.youtube.com/watch?v=i4TkUfmw7Rk" target="_blank">
+              DevCon 2023
+            </a>
+          </li>
+          <li>
+            <a href="https://www.youtube.com/watch?v=v7kFtfdoiRs" target="_blank">
+              FrontendNation 2024
+            </a>
+          </li>
+          <li>
+            <a href="https://gitnation.com/contents/scaling-a11y" target="_blank">
+              JSNation US 2024
+            </a>
+          </li>
+        </ul>
         <figure>
           <iframe
-            title="Tim Damen live coding at DevCon in Amsterdam (2024)"
+            title="Frontend Nation 2024: Tim Damen - Web accessibility in practice, more than just WCAG"
             className="h-[350px] max-h-full w-full max-w-full"
-            src="https://www.youtube.com/embed/i4TkUfmw7Rk"
+            src="https://www.youtube.com/embed/v7kFtfdoiRs?si=gd_phmPuFhATqM7F"
           ></iframe>
 
-          <figcaption className="text-sm">Live coding at DevCon in Amsterdam (2024)</figcaption>
+          <figcaption className="text-sm">Web accessibility in practice - Frontend Nation 2024</figcaption>
         </figure>
         <h2 id="free-guest-lectures">Free guest lectures</h2>
         <p>
