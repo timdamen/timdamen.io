@@ -19,8 +19,6 @@ export async function GET(req) {
     const heading =
       values.heading.length > 140 ? `${values.heading.substring(0, 140)}...` : values.heading
 
-    const { mode } = values
-
     const fontSize = heading.length > 100 ? '60px' : '70px'
 
     const [regularFontData, boldFontData] = await Promise.all([regularFont, boldFont])
